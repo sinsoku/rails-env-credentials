@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "rails/env/credentials"
+require "rails-env-credentials"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -12,3 +12,5 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 end
+
+require 'fake_app'
