@@ -2,6 +2,7 @@
 
 require "rails_env_credentials"
 require "rails_env_credentials/command/environment_loading"
+require "rails_env_credentials/command/file_argument"
 require "rails_env_credentials/command/master_key_path_reloading"
 
 # Allow environment argument in `credentials:edit` command
@@ -9,6 +10,7 @@ require "rails/command"
 require "rails/commands/credentials/credentials_command"
 require "rails/command/environment_argument"
 Rails::Command::CredentialsCommand.include(Rails::Command::EnvironmentArgument)
+Rails::Command::CredentialsCommand.include(RailsEnvCredentials::FileArgument)
 Rails::Command::CredentialsCommand.prepend(RailsEnvCredentials::EnvironmentLoading)
 
 # Reload master key path before use it
