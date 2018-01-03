@@ -10,8 +10,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["sinsoku"]
   spec.email         = ["sinsoku.listy@gmail.com"]
 
-  spec.summary       = "It enhances the credentials configuration configuration introduced by Rails v5.2.0"
-  spec.description   = "It enhances the credentials configuration configuration introduced by Rails v5.2.0"
+  spec.summary       = "It enhances the credentials configuration introduced by Rails v5.2.0"
+  spec.description   = "It enhances the credentials configuration introduced by Rails v5.2.0"
   spec.homepage      = "https://github.com/sinsoku/rails-env-credentials"
   spec.license       = "MIT"
 
