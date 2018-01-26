@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RailsEnvCredentials
-  module CredentialsLoading
+  module CredentialsOverwrite
     def credentials
       @credentials ||= RailsEnvCredentials.credentials
     end

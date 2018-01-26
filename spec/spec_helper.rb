@@ -11,6 +11,10 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  ignore_content = File.read(".gitignore")
+  config.after(:suite) { File.write(".gitignore", ignore_content) }
 end
 
-require 'fake_app'
+require "rails/command"
+require "fake_app"

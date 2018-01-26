@@ -1,26 +1,32 @@
 # frozen_string_literal: true
 
-require "active_support/core_ext/module/delegation"
 require "rails"
-
-require "rails_env_credentials/configuration"
-require "rails_env_credentials/credentials_loading"
+require "rails_env_credentials/config"
+require "rails_env_credentials/credentials_overwrite"
 require "rails_env_credentials/railtie"
 require "rails_env_credentials/version"
 
 module RailsEnvCredentials
   class << self
-    delegate :credentials, :include_env?, :key_path, to: :config
-
-    def configure
-      yield config
-      config.reload!
+    def config_path=(path)
+      if path.end_with?('credentials.yml.enc')
+        env = 'production'
+      else
+        env = /-(\w+)\.yml\.enc\Z/.match(path).to_a[1]
+      end
+      @config = Config.new(env: env, config_path: path)
     end
 
-    private
+    def env=(env)
+      @config = Config.new(env: env)
+    end
 
-    def config
-      @config ||= Configuration.new
+    def options
+      (@config || Config.new).to_options
+    end
+
+    def credentials
+      ActiveSupport::EncryptedConfiguration.new(options)
     end
   end
 end
