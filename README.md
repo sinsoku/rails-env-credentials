@@ -1,102 +1,76 @@
 # RailsEnvCredentials
 
-RailsEnvCredentials enhances the credentials configuration introduced by Rails v5.2.0.
+It enhances the Credentials feature introduced by Rails v5.2.0.
 
-It make that `Rails.application.credentials` returns environment specific credentials.
+## Why make it?
 
-## Features
+Credentials is a good feature, but we cannot use it on development and test environment.
 
-It supports two cases as below:
+DHH wrote as follow in the pull request for initial implementation:
 
-### Case 1: Specify config file per env
+> It's only in production (and derivative environments, like exposed betas) where the secret actually needs to be secret.
+>
+> refs: https://github.com/rails/rails/pull/30067
 
-You can use credentials with a different file per env.
+However, I have to manage secrets in the staging environment.
 
-```yaml
-# config/credentials-development.yml.enc
-token: xxx
-```
+I do not have the confidence to explain explicit use cases to Rails team, so I implemented as a gem.
 
-```yaml
-# config/credentials.yml.enc
-token: xxx
-```
-
-### Case 2: Includes env in credentials
-
-You can include env at a root level in credentials.
-
-```yaml
-# config/credentials.yml.enc
-development:
-  token: xxx
-
-test:
-  token: xxx
-
-production:
-  token: xxx
-```
+If many people use it, I would like to send a pull request to Rails.:octocat::heart:
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your Rails application's Gemfile:
 
 ```ruby
-gem 'rails-env-credentials'
+group :development, :test do
+  gem 'rails-env-credentials'
+end
 ```
 
-Then add this to `bin/rails` before `require 'rails/commands'`:
+And then execute:
 
-```ruby
-require 'rails_env_credentials/command'
+```
+$ bundle
 ```
 
 ## Usage
 
-You need to configure in `config/application.rb`:
+RailsEnvCredentials will automatically generate encrypted file and the master key when you starts editing credentials at first:
 
-### Case 1: Specify config file per env
-
-```ruby
-# config/application.rb
-RailsEnvCredentials.configure do |config|
-  config.development = {
-    config_path: "config/credentials-development.yml.enc",
-    key_path: "config/development.key",
-    env_key: "RAILS_DEVELOPMENT_KEY",
-  }
-
-  config.test = {
-    config_path: "config/credentials-test.yml.enc",
-    key_path: "config/test.key",
-    env_key: "RAILS_TEST_KEY",
-  }
-end
+```
+$ rails env_credentials:edit -e development
 ```
 
-### Case 2: Includes env in credentials
+If you want to see decrypted contents, use `env_credentials:show`
 
-```ruby
-# config/application.rb
-RailsEnvCredentials.configure do |config|
-  config.default[:include_env] = true
-end
+```
+$ rails env_credentials:show -e development
 ```
 
-### How to edit credentials
+## Additional information
 
-If you use only one file, so execute the command normally.
+### Other environments support
 
-```bash
-$ rails credentials:edit
+For example, if the `config/environments/staging.rb` exists, RailsEnvCredentials will automatically generate `config/credentials-staging.yml.enc`.
+
+### Display a diff
+
+You can’t directly compare encrypted files between two versions, but it turns out you can see a diff using Git attributes.
+
+Put the following line in your `.gitattributes` file:
+
+```
+config/credentials*.yml.enc diff=env_credentials
 ```
 
-If you use multiple config files, so execute with environment arguments.
+Then configure Git to use `env_credentials:show`:
 
-```bash
-$ rails credentials:edit -e production
 ```
+$ git config diff.env_credentials.textconv 'rails env_credentials:show --file'
+```
+
+This tells Git that encrypted files should decrypt by the `env_credentials:show` task when you try to display a diff.
 
 ## Development
 
@@ -114,4 +88,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Rails::Env::Credentials project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/rails-env-credentials/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Rails::Env::Credentials project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/sinsoku/rails-env-credentials/blob/master/CODE_OF_CONDUCT.md).
