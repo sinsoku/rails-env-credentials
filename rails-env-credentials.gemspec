@@ -22,8 +22,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  # TODO: Add a dependecy after the v5.2.0 releases
-  # spec.add_dependency "rails", ">= 5.2.0"
+  spec.add_dependency "rails", ">= 5.2.0.rc1"
 
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "rake", "~> 10.0"
