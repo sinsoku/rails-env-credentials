@@ -1,3 +1,7 @@
+ENV['RAILS_ENV'] ||= 'test'
+require 'simplecov'
+SimpleCov.start
+
 require "bundler/setup"
 require "rails-env-credentials"
 
@@ -15,8 +19,6 @@ RSpec.configure do |config|
   ignore_content = File.read(".gitignore")
   config.after(:suite) { File.write(".gitignore", ignore_content) }
 end
-
-ENV['RAILS_ENV'] ||= 'test'
 
 require "rails/command"
 require "fake_app"

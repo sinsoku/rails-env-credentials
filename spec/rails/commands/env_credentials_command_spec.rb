@@ -30,6 +30,14 @@ RSpec.describe "Rails::Command::EnvCredentialsCommand" do
         expect(File).to be_exist 'config/master.key'
       end
     end
+
+    context "with the wrong environment" do
+      it do
+        expect {
+          run_edit_command(args: %w[-e foo])
+        }.to raise_error(a_string_starting_with("'foo' environment is not found"))
+      end
+    end
   end
 
   describe "#show" do
