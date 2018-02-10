@@ -1,3 +1,4 @@
+[![Gem Version](https://badge.fury.io/rb/rails-env-credentials.svg)](https://badge.fury.io/rb/rails-env-credentials)
 [![Build Status](https://travis-ci.org/sinsoku/rails-env-credentials.svg?branch=master)](https://travis-ci.org/sinsoku/rails-env-credentials)
 
 # RailsEnvCredentials
