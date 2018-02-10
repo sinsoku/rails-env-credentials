@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/sinsoku/rails-env-credentials.svg?branch=master)](https://travis-ci.org/sinsoku/rails-env-credentials)
+
 # RailsEnvCredentials
 
 It enhances the Credentials feature introduced by Rails v5.2.0.
