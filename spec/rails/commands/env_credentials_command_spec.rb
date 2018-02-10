@@ -14,11 +14,11 @@ RSpec.describe "Rails::Command::EnvCredentialsCommand" do
 
   describe "#edit" do
     context "no arguments" do
-      it "generates files for the development environment" do
+      it "generates files for the test environment" do
         quietly { run_edit_command }
 
-        expect(File).to be_exist 'config/credentials-development.yml.enc'
-        expect(File).to be_exist 'config/master-development.key'
+        expect(File).to be_exist 'config/credentials-test.yml.enc'
+        expect(File).to be_exist 'config/master-test.key'
       end
     end
 
@@ -53,8 +53,8 @@ RSpec.describe "Rails::Command::EnvCredentialsCommand" do
       it "shows credentials in temporary directory" do
         quietly { run_edit_command(editor: "eval echo api_key: abc >") }
 
-        Tempfile.open(['', '-development.yml.enc']) do |f|
-          encrypted = File.read("config/credentials-development.yml.enc")
+        Tempfile.open(['', '-test.yml.enc']) do |f|
+          encrypted = File.read("config/credentials-test.yml.enc")
           f.write(encrypted)
           f.rewind
 

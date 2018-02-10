@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 RSpec.describe RailsEnvCredentials do
-  def valid_development_options
+  def valid_test_options
     {
-      config_path: "config/credentials-development.yml.enc",
-      env_key: "RAILS_MASTER_KEY_DEVELOPMENT",
-      key_path: "config/master-development.key",
+      config_path: "config/credentials-test.yml.enc",
+      env_key: "RAILS_MASTER_KEY_TEST",
+      key_path: "config/master-test.key",
       raise_if_missing_key: false,
     }
   end
@@ -23,9 +23,9 @@ RSpec.describe RailsEnvCredentials do
     subject { RailsEnvCredentials.options }
 
     context "when the argument is 'credentials-development.yml.enc'" do
-      let(:config_path) { 'credentials-development.yml.enc' }
+      let(:config_path) { 'credentials-test.yml.enc' }
       before { RailsEnvCredentials.config_path = config_path }
-      it { is_expected.to eq valid_development_options.merge(config_path: config_path) }
+      it { is_expected.to eq valid_test_options.merge(config_path: config_path) }
     end
 
     context "when the argument is 'credentials.yml.enc'" do
@@ -38,9 +38,9 @@ RSpec.describe RailsEnvCredentials do
   describe ".env=" do
     subject { RailsEnvCredentials.options }
 
-    context "when the argument is 'development'" do
-      before { RailsEnvCredentials.env = "development" }
-      it { is_expected.to eq valid_development_options }
+    context "when the argument is 'test'" do
+      before { RailsEnvCredentials.env = "test" }
+      it { is_expected.to eq valid_test_options }
     end
 
     context "when the argument is 'production'" do
@@ -53,8 +53,8 @@ RSpec.describe RailsEnvCredentials do
     before { RailsEnvCredentials.instance_variable_set(:@config, nil) }
     subject { RailsEnvCredentials.options }
 
-    context "when Rails.env is 'development'" do
-      it { is_expected.to eq valid_development_options }
+    context "when Rails.env is 'test'" do
+      it { is_expected.to eq valid_test_options }
     end
 
     context "when Rails.env is 'production'" do

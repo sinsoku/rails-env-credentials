@@ -16,5 +16,7 @@ RSpec.configure do |config|
   config.after(:suite) { File.write(".gitignore", ignore_content) }
 end
 
+ENV['RAILS_ENV'] ||= 'test'
+
 require "rails/command"
 require "fake_app"
