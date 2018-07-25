@@ -12,7 +12,9 @@ matrix:
   allow_failures:
     - rvm: ruby-head
     - gemfile: gemfiles/rails_edge.gemfile
-before_install: gem install bundler -v 1.16.1
+before_install:
+  - gem update --system
+  - gem update bundler
 cache: bundler
 notifications:
   email:
