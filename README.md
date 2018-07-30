@@ -5,22 +5,6 @@
 
 It enhances the Credentials feature introduced by Rails v5.2.0.
 
-## Why make it?
-
-Credentials is a good feature, but we cannot use it on development and test environment.
-
-DHH wrote as follow in the pull request for initial implementation:
-
-> It's only in production (and derivative environments, like exposed betas) where the secret actually needs to be secret.
->
-> refs: https://github.com/rails/rails/pull/30067
-
-However, I have to manage secrets in the staging environment.
-
-I do not have the confidence to explain explicit use cases to Rails team, so I implemented as a gem.
-
-If many people use it, I would like to send a pull request to Rails.:octocat::heart:
-
 ## Installation
 
 Add this line to your Rails application's Gemfile:
@@ -39,13 +23,47 @@ $ bundle
 
 ## Usage
 
-RailsEnvCredentials will automatically generate encrypted file and the master key when you starts editing credentials at first:
+RailsEnvCredentials manages credentials and key pairs with the following:
+
+```
+config/credentials-development.yml.enc
+config/credentials-test.yml.enc
+config/credentials.yml.enc
+master-development.key
+master-test.key
+master.key
+```
+
+You can use appropriate credentials depending on `Rails.env`.
+
+```console
+$ rails env_credentials:show -e development
+# config/credentials-development.yml.enc
+aws:
+  bucket: foo-dev
+
+$ rails env_credentials:show -e production
+# config/credentials.yml.enc
+aws:
+  bucket: foo-prod
+
+$ rails runner -e development 'pp Rails.application.credentials.aws.bucket'
+"foo-dev"
+$ rails runner -e production 'pp Rails.application.credentials.aws.bucket'
+"foo-prod"
+```
+
+## Generating secrets and a master key
+
+It automatically generate encrypted file and the master key when you starts editing credentials at first:
 
 ```
 $ rails env_credentials:edit -e development
 ```
 
-If you want to see decrypted contents, use `env_credentials:show`
+## Show secrets
+
+You want to see decrypted contents, use `env_credentials:show`:
 
 ```
 $ rails env_credentials:show -e development
@@ -55,7 +73,11 @@ $ rails env_credentials:show -e development
 
 ### Other environments support
 
-For example, if the `config/environments/staging.rb` exists, RailsEnvCredentials will automatically generate `config/credentials-staging.yml.enc`.
+For example, if the `config/environments/staging.rb` exists, you will generate `config/credentials-staging.yml.enc`.
+
+```
+$ rails env_credentials:edit -e staging
+```
 
 ### Display a diff
 
@@ -74,6 +96,20 @@ $ git config diff.env_credentials.textconv 'rails env_credentials:show --file'
 ```
 
 This tells Git that encrypted files should decrypt by the `env_credentials:show` task when you try to display a diff.
+
+## Why make this gem?
+
+Credentials is a good feature, but we cannot use it on development and test environment.
+
+DHH wrote as follow in the pull request for initial implementation:
+
+> It's only in production (and derivative environments, like exposed betas) where the secret actually needs to be secret.
+>
+> refs: https://github.com/rails/rails/pull/30067
+
+However, I have to manage secrets and a master key different from production for testing in the staging environment.
+
+I do not have the confidence to explain explicit use cases to Rails team, so I implemented as a gem.
 
 ## Development
 
