@@ -14,7 +14,7 @@ matrix:
     - gemfile: gemfiles/rails_edge.gemfile
 before_install:
   - gem update --system
-  - gem update bundler
+  - gem install bundler -v '< 2.0'
 cache: bundler
 notifications:
   email:
