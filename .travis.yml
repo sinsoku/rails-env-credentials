@@ -1,9 +1,12 @@
 sudo: false
 language: ruby
+
 rvm:
-  - 2.5.1
   - 2.4.4
+  - 2.5.1
+  - 2.6
   - ruby-head
+
 gemfile:
   - Gemfile
   - gemfiles/rails_52.gemfile
