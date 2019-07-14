@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 module RailsEnvCredentials
+  module CredentialsOverwrite
+    def credentials
+      @credentials ||= RailsEnvCredentials.credentials
+    end
+  end
+
   class Railtie < ::Rails::Railtie
     config.before_configuration do
       is_credentials_command = Rails.const_defined?(:Command) &&

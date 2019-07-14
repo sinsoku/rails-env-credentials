@@ -2,7 +2,6 @@
 
 require "rails"
 require "rails_env_credentials/config"
-require "rails_env_credentials/credentials_overwrite"
 require "rails_env_credentials/railtie"
 require "rails_env_credentials/version"
 
