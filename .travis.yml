@@ -8,7 +8,6 @@ rvm:
   - ruby-head
 
 gemfile:
-  - Gemfile
   - gemfiles/rails_52.gemfile
   - gemfiles/rails_edge.gemfile
 
