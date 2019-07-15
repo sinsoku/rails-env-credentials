@@ -18,6 +18,13 @@ module Rails
     class EnvCredentialsCommand < Rails::Command::CredentialsCommand
       include EnvironmentArgument
 
+      module CredentialsOverwrite
+        # refs: https://github.com/rails/rails/blob/v5.2.3/railties/lib/rails/generators/rails/credentials/credentials_generator.rb#L36
+        def credentials
+          @credentials ||= RailsEnvCredentials.encrypted(raise_if_missing_key: true)
+        end
+      end
+
       argument :file, optional: true, banner: "file"
       class_option :file, aliases: "-f", type: :string
 
@@ -49,7 +56,7 @@ module Rails
         require "rails/generators"
         require "rails/generators/rails/master_key/master_key_generator"
 
-        key_path = RailsEnvCredentials.options[:key_path]
+        key_path = RailsEnvCredentials.config.key_path
         Rails::Generators::MasterKeyGenerator.const_set!(:MASTER_KEY_PATH, Pathname.new(key_path))
         Rails::Generators::MasterKeyGenerator.new
       end
@@ -58,7 +65,7 @@ module Rails
         require "rails/generators"
         require "rails/generators/rails/credentials/credentials_generator"
 
-        Rails::Generators::CredentialsGenerator.prepend(RailsEnvCredentials::CredentialsOverwrite)
+        Rails::Generators::CredentialsGenerator.prepend(CredentialsOverwrite)
         Rails::Generators::CredentialsGenerator.new
       end
     end

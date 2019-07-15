@@ -20,12 +20,13 @@ module RailsEnvCredentials
       @config = Config.new(env: env)
     end
 
-    def options
-      (@config || Config.new).to_options
+    def config
+      @config ||= Config.new
     end
 
-    def credentials
-      ActiveSupport::EncryptedConfiguration.new(options)
+    def encrypted(raise_if_missing_key:)
+      opts = config.to_h.merge(raise_if_missing_key: raise_if_missing_key)
+      ActiveSupport::EncryptedConfiguration.new(opts)
     end
   end
 end

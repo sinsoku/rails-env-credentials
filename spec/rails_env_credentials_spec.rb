@@ -5,8 +5,7 @@ RSpec.describe RailsEnvCredentials do
     {
       config_path: "config/credentials-test.yml.enc",
       env_key: "RAILS_MASTER_KEY_TEST",
-      key_path: "config/master-test.key",
-      raise_if_missing_key: false,
+      key_path: "config/master-test.key"
     }
   end
 
@@ -14,13 +13,12 @@ RSpec.describe RailsEnvCredentials do
     {
       config_path: "config/credentials.yml.enc",
       env_key: "RAILS_MASTER_KEY",
-      key_path: "config/master.key",
-      raise_if_missing_key: false,
+      key_path: "config/master.key"
     }
   end
 
   describe ".config_path=" do
-    subject { RailsEnvCredentials.options }
+    subject { RailsEnvCredentials.config.to_h }
 
     context "when the argument is 'credentials-development.yml.enc'" do
       let(:config_path) { 'credentials-test.yml.enc' }
@@ -36,7 +34,7 @@ RSpec.describe RailsEnvCredentials do
   end
 
   describe ".env=" do
-    subject { RailsEnvCredentials.options }
+    subject { RailsEnvCredentials.config.to_h }
 
     context "when the argument is 'test'" do
       before { RailsEnvCredentials.env = "test" }
@@ -51,7 +49,7 @@ RSpec.describe RailsEnvCredentials do
 
   describe '.config' do
     before { RailsEnvCredentials.instance_variable_set(:@config, nil) }
-    subject { RailsEnvCredentials.options }
+    subject { RailsEnvCredentials.config.to_h }
 
     context "when Rails.env is 'test'" do
       it { is_expected.to eq valid_test_options }
