@@ -18,6 +18,10 @@ before_install:
 cache: bundler
 
 matrix:
+  exclude:
+    - rvm: 2.4
+      gemfile: gemfiles/rails_edge.gemfile
+
   allow_failures:
     - rvm: ruby-head
     - gemfile: gemfiles/rails_edge.gemfile
