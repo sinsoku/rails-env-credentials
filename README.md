@@ -34,6 +34,14 @@ master-test.key
 master.key
 ```
 
+It also manages environment variables for each env.
+
+```
+RAILS_MASTER_KEY_DEVELOPMENT
+RAILS_MASTER_KEY_TEST
+RAILS_MASTER_KEY
+```
+
 You can use appropriate credentials depending on `Rails.env`.
 
 ```console
