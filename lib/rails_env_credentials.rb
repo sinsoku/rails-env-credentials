@@ -25,7 +25,7 @@ module RailsEnvCredentials
     end
 
     def credentials
-      ActiveSupport::EncryptedConfiguration.new(options)
+      ActiveSupport::EncryptedConfiguration.new(**options)
     end
   end
 end
